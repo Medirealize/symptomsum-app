@@ -35,11 +35,20 @@ export const TIME_RANGE_OPTIONS: { value: import('./types').TimeRange; label: st
   { value: 'just_now', label: 'さっきから' },
   { value: 'today', label: '今日から' },
   { value: 'yesterday', label: '昨日から' },
+  { value: 'day_2', label: '一昨日から' },
+  { value: 'day_3', label: '3日前から' },
+  { value: 'day_4', label: '4日前から' },
+  { value: 'day_5', label: '5日前から' },
+  { value: 'day_6', label: '6日前から' },
   { value: 'week_1', label: '1週間前から' },
   { value: 'week_2', label: '2週間前から' },
   { value: 'week_3', label: '3週間前から' },
-  { value: 'weeks_ago', label: '数週間前から' },
-  { value: 'months_ago', label: '何ヶ月か前から' },
+  { value: 'month_1', label: '1ヵ月前から' },
+  { value: 'month_2', label: '2ヵ月前から' },
+  { value: 'month_3', label: '3ヵ月前から' },
+  { value: 'month_4', label: '4ヵ月前から' },
+  { value: 'month_5', label: '5ヵ月前から' },
+  { value: 'month_6_plus', label: '6ヵ月以上前から' },
 ];
 
 /** 程度 */

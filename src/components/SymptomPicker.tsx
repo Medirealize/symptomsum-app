@@ -35,7 +35,7 @@ const SYMPTOM_GROUPS: { label: string; icon: React.ReactNode; types: SymptomType
 ];
 
 export default function SymptomPicker({ onAdd, onClose }: SymptomPickerProps) {
-  const [step, setStep] = useState<'time' | 'time_weeks' | 'symptom' | 'option' | 'severity'>('time');
+  const [step, setStep] = useState<'time' | 'time_days' | 'time_weeks' | 'time_months' | 'symptom' | 'option' | 'severity'>('time');
   const [timeRange, setTimeRange] = useState<TimeRange>('just_now');
   const [selectedType, setSelectedType] = useState<SymptomType | null>(null);
   const [severity, setSeverity] = useState<Severity>('mid');
@@ -87,7 +87,11 @@ export default function SymptomPicker({ onAdd, onClose }: SymptomPickerProps) {
       setStep('symptom');
     } else if (step === 'symptom') {
       setStep('time');
+    } else if (step === 'time_days') {
+      setStep('time');
     } else if (step === 'time_weeks') {
+      setStep('time');
+    } else if (step === 'time_months') {
       setStep('time');
     } else {
       onClose();
@@ -106,7 +110,9 @@ export default function SymptomPicker({ onAdd, onClose }: SymptomPickerProps) {
           </button>
           <span className="text-sm text-slate-500">
             {step === 'time' && 'いつから'}
+            {step === 'time_days' && 'いつから（今日〜6日前）'}
             {step === 'time_weeks' && 'いつから（週）'}
+            {step === 'time_months' && 'いつから（ヵ月）'}
             {step === 'symptom' && '症状を選ぶ'}
             {step === 'option' && (selectedType === 'mood' ? '機嫌' : '食欲')}
             {step === 'severity' && '程度'}
@@ -118,8 +124,6 @@ export default function SymptomPicker({ onAdd, onClose }: SymptomPickerProps) {
             <div className="space-y-2">
               {[
                 { value: 'just_now' as const, label: 'さっきから' },
-                { value: 'today' as const, label: '今日から' },
-                { value: 'yesterday' as const, label: '昨日から' },
               ].map((opt) => (
                 <button
                   key={opt.value}
@@ -135,6 +139,19 @@ export default function SymptomPicker({ onAdd, onClose }: SymptomPickerProps) {
                 </button>
               ))}
 
+              {/* 今日〜6日前のサブ選択へ */}
+              <button
+                type="button"
+                onClick={() => {
+                  triggerHaptic();
+                  setStep('time_days');
+                }}
+                className="w-full py-4 rounded-2xl bg-slate-100 text-slate-800 font-medium active:bg-slate-200 flex items-center justify-between px-5"
+              >
+                <span>今日から</span>
+                <span className="text-slate-400">→</span>
+              </button>
+
               {/* 週のサブ選択へ */}
               <button
                 type="button"
@@ -148,10 +165,31 @@ export default function SymptomPicker({ onAdd, onClose }: SymptomPickerProps) {
                 <span className="text-slate-400">→</span>
               </button>
 
-              {/* 既存のざっくり選択 */}
+              {/* ヵ月のサブ選択へ */}
+              <button
+                type="button"
+                onClick={() => {
+                  triggerHaptic();
+                  setStep('time_months');
+                }}
+                className="w-full py-4 rounded-2xl bg-slate-100 text-slate-800 font-medium active:bg-slate-200 flex items-center justify-between px-5"
+              >
+                <span>1ヵ月前から</span>
+                <span className="text-slate-400">→</span>
+              </button>
+            </div>
+          )}
+
+          {step === 'time_days' && (
+            <div className="space-y-2">
               {[
-                { value: 'weeks_ago' as const, label: '数週間前から' },
-                { value: 'months_ago' as const, label: '何ヶ月か前から' },
+                { value: 'today' as const, label: '今日から' },
+                { value: 'yesterday' as const, label: '昨日から' },
+                { value: 'day_2' as const, label: '一昨日から' },
+                { value: 'day_3' as const, label: '3日前から' },
+                { value: 'day_4' as const, label: '4日前から' },
+                { value: 'day_5' as const, label: '5日前から' },
+                { value: 'day_6' as const, label: '6日前から' },
               ].map((opt) => (
                 <button
                   key={opt.value}
@@ -175,6 +213,32 @@ export default function SymptomPicker({ onAdd, onClose }: SymptomPickerProps) {
                 { value: 'week_1' as const, label: '1週間前から' },
                 { value: 'week_2' as const, label: '2週間前から' },
                 { value: 'week_3' as const, label: '3週間前から' },
+              ].map((opt) => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => {
+                    triggerHaptic();
+                    setTimeRange(opt.value);
+                    setStep('symptom');
+                  }}
+                  className="w-full py-4 rounded-2xl bg-slate-100 text-slate-800 font-medium active:bg-slate-200"
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {step === 'time_months' && (
+            <div className="space-y-2">
+              {[
+                { value: 'month_1' as const, label: '1ヵ月前から' },
+                { value: 'month_2' as const, label: '2ヵ月前から' },
+                { value: 'month_3' as const, label: '3ヵ月前から' },
+                { value: 'month_4' as const, label: '4ヵ月前から' },
+                { value: 'month_5' as const, label: '5ヵ月前から' },
+                { value: 'month_6_plus' as const, label: '6ヵ月以上前から' },
               ].map((opt) => (
                 <button
                   key={opt.value}

@@ -6,11 +6,20 @@ export type TimeRange =
   | 'just_now'
   | 'today'
   | 'yesterday'
+  | 'day_2'
+  | 'day_3'
+  | 'day_4'
+  | 'day_5'
+  | 'day_6'
   | 'week_1'
   | 'week_2'
   | 'week_3'
-  | 'weeks_ago'
-  | 'months_ago';
+  | 'month_1'
+  | 'month_2'
+  | 'month_3'
+  | 'month_4'
+  | 'month_5'
+  | 'month_6_plus';
 
 /** 症状タイプ（仕様に合わせたID） */
 export type SymptomType =
