@@ -22,9 +22,14 @@ function isPrivateIp(hostname: string): boolean {
 export default function ServiceWorkerCleanup() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    // 開発中はアクセス先に関係なくSW/Cacheを解除（淡白化の再発防止）
+    if (process.env.NODE_ENV === 'development') {
+      // continue
+    } else {
     const host = window.location.hostname;
     // スマホ実機検証（LAN内IP）でも確実にSWを解除する
     if (!isLocalhost(host) && !isPrivateIp(host)) return;
+    }
 
     // 開発中に見た目が戻らない原因になりがちなSW/Cacheを強制クリア
     (async () => {
