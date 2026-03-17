@@ -3,16 +3,6 @@
 import { SYMPTOM_LABELS, MOOD_OPTIONS, APPETITE_OPTIONS, TIME_RANGE_OPTIONS, SEVERITY_OPTIONS } from '@/lib/constants';
 import type { SymptomLog } from '@/lib/types';
 
-function formatTime(iso: string): string {
-  const d = new Date(iso);
-  const now = new Date();
-  const isToday = d.toDateString() === now.toDateString();
-  if (isToday) {
-    return d.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
-  }
-  return d.toLocaleDateString('ja-JP', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-}
-
 function timeRangeLabel(v: string): string {
   return TIME_RANGE_OPTIONS.find((o) => o.value === v)?.label ?? v;
 }
@@ -66,7 +56,7 @@ export default function LogTimeline({ logs }: LogTimelineProps) {
           <div className="flex justify-between items-start gap-2">
             <div>
               <p className="font-medium text-slate-900">{symptomDisplay(log)}</p>
-              <p className="text-sm text-slate-500 mt-0.5">{timeRangeLabel(log.timeRange)} · {formatTime(log.timestamp)}</p>
+              <p className="text-sm text-slate-500 mt-0.5">{timeRangeLabel(log.timeRange)}</p>
             </div>
             <span
               className={`flex-shrink-0 text-xs font-medium px-2 py-1 rounded-full ${
