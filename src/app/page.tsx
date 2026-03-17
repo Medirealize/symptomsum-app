@@ -225,7 +225,7 @@ export default function Home() {
       />
 
       <main className="flex-1 px-4 pt-4 pb-32">
-        <h1 className="text-lg font-bold text-slate-800 mb-2">症状ログ</h1>
+        <h1 className="text-lg font-bold text-slate-800 mb-2">いつから？に答える。 〜家族の体調、タップで記録〜</h1>
         <LogTimeline logs={logs} />
 
         {archiveMessage && (
