@@ -45,7 +45,6 @@ export default function Home() {
     summary: string;
     chief1: string;
     chief2: string | null;
-    contextLines: string[];
   } | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const [archiveMessage, setArchiveMessage] = useState<string | null>(null);
@@ -197,7 +196,6 @@ export default function Home() {
         summary: (data && typeof data === 'object' && 'summary' in data ? (data as any).summary : '') ?? '',
         chief1: chief1 || '（なし）',
         chief2: chief2 || null,
-        contextLines: getContextLines(logs),
       });
     } catch (e) {
       const raw = e instanceof Error ? e.message : '要約の取得に失敗しました';
@@ -323,7 +321,6 @@ export default function Home() {
           chiefComplaint1={doctorView.chief1}
           chiefComplaint2={doctorView.chief2}
           summary={doctorView.summary}
-          contextLines={doctorView.contextLines}
           onClose={() => setDoctorView(null)}
         />
       )}

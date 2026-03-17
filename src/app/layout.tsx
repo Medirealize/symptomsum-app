@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
+import ServiceWorkerCleanup from '@/components/ServiceWorkerCleanup';
 
 export const metadata: Metadata = {
   title: 'Symptom-Block | 症状経過要約',
@@ -23,7 +24,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className="min-h-screen bg-slate-50 text-slate-900">{children}</body>
+      <body className="min-h-screen bg-slate-50 text-slate-900">
+        <ServiceWorkerCleanup />
+        {children}
+      </body>
     </html>
   );
 }

@@ -3,14 +3,19 @@ import type { SymptomType, MoodValue, AppetiteValue } from './types';
 /** 症状タイプ → 表示ラベル */
 export const SYMPTOM_LABELS: Record<SymptomType, string> = {
   fever: '発熱',
+  fatigue: 'だるい',
   mood: '機嫌',
   cough: '咳',
+  sputum: '痰絡み',
+  sore_throat: '咽頭痛',
   runny_nose: '鼻水',
   soft_stool: '軟便',
   watery_stool: '水様便',
   nausea: '吐き気',
   vomit: '嘔吐',
   appetite: '食欲低下',
+  abdominal_pain: '腹痛',
+  back_pain: '背部痛',
   rash: '発疹',
   pain: '痛み',
   itch: 'かゆみ',
@@ -25,7 +30,7 @@ export const MOOD_OPTIONS: { value: MoodValue; label: string; emoji: string }[] 
 
 /** 食欲の表示 */
 export const APPETITE_OPTIONS: { value: AppetiteValue; label: string }[] = [
-  { value: 'eat', label: '食べれる' },
+  { value: 'eat', label: '食べられる' },
   { value: 'half', label: '半分' },
   { value: 'water_only', label: '水分のみ' },
 ];

@@ -12,7 +12,7 @@ export async function POST(req: Request) {
   const openai = new OpenAI({ apiKey });
 
   try {
-    const { patientInfo, logs, context, chiefComplaints } = await req.json();
+    const { patientInfo, logs, chiefComplaints } = await req.json();
 
     const systemPrompt = `
 あなたは優秀な医療通訳兼編集者です。
@@ -34,13 +34,16 @@ export async function POST(req: Request) {
 ■患者情報: ${patientInfo?.name ?? ''} (${patientInfo?.age ?? ''} / ${patientInfo?.gender ?? ''})
 ■アレルギー: ${patientInfo?.allergies ?? 'なし'}
 ■主訴: 1. ${chief1} / 2. ${chief2 || 'なし'}
-■周辺情報: 食欲: ${context?.appetite ?? '―'}, 機嫌: ${context?.mood ?? '―'}, 周囲の流行: ${context?.epidemic ?? '―'}
 ■経過ログ:
-${Array.isArray(logs) ? logs.map((l: { time: string; symptom: string; severity: string }) => `- ${l.time}: ${l.symptom} (${l.severity})`).join('\n') : ''}
+${Array.isArray(logs) ? logs.map((l: { time: string; symptom: string; severity: string }) => `- ${l.symptom} (${l.severity})`).join('\n') : ''}
 
 ### 出力フォーマット
-【経過の要約】のみを、3行以内の箇条書きで書いてください。診断はしないでください。患者の表現をそのまま使ってください。
-【周辺情報】食欲・機嫌などを1行ずつ簡潔に。
+【経過の要約】
+- 最優先: 症状を羅列せず、経過が分かるように「出現→悪化/改善→現在」を短くまとめる。
+- 形式: 箇条書き。時刻・時間帯（◯◯時、朝/昼/夕/夜 など）は一切書かない。
+- 行数: 最大5行の箇条書き（短いほど良い）。重要度は「主訴に関係するもの」「程度がひどい」「新しく出現/悪化/改善」を優先。
+- 表現: 医療用語に言い換えず、患者の言葉を維持（例: 水様便、咳）。
+- 禁止: 診断・助言・推測（〜の可能性、〜だと思う 等）をしない。
 `;
 
     const response = await openai.chat.completions.create({

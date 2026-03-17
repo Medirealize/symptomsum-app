@@ -28,9 +28,9 @@ interface SymptomPickerProps {
 }
 
 const SYMPTOM_GROUPS: { label: string; icon: React.ReactNode; types: SymptomType[] }[] = [
-  { label: '全身', icon: <Thermometer className="w-4 h-4" />, types: ['fever', 'mood'] },
-  { label: '呼吸', icon: <Wind className="w-4 h-4" />, types: ['cough', 'runny_nose'] },
-  { label: '消化', icon: <Utensils className="w-4 h-4" />, types: ['soft_stool', 'watery_stool', 'vomit', 'nausea', 'appetite'] },
+  { label: '全身', icon: <Thermometer className="w-4 h-4" />, types: ['fever', 'fatigue', 'mood'] },
+  { label: '呼吸', icon: <Wind className="w-4 h-4" />, types: ['cough', 'sputum', 'sore_throat', 'runny_nose'] },
+  { label: '消化器', icon: <Utensils className="w-4 h-4" />, types: ['soft_stool', 'watery_stool', 'vomit', 'nausea', 'appetite', 'abdominal_pain', 'back_pain'] },
   { label: 'その他', icon: <Smile className="w-4 h-4" />, types: ['rash', 'pain', 'itch'] },
 ];
 
@@ -272,7 +272,7 @@ export default function SymptomPicker({ onAdd, onClose }: SymptomPickerProps) {
                         onClick={() => handleSelectSymptom(type)}
                         className="py-3 px-4 rounded-xl bg-slate-100 text-slate-800 font-medium active:bg-slate-200"
                       >
-                        {type === 'mood' && '😊😐😫'}
+                        {type === 'mood' && '機嫌'}
                         {type === 'appetite' && '食欲'}
                         {type !== 'mood' && type !== 'appetite' && SYMPTOM_LABELS[type]}
                       </button>

@@ -24,14 +24,19 @@ export type TimeRange =
 /** 症状タイプ（仕様に合わせたID） */
 export type SymptomType =
   | 'fever'           // 発熱（体温とセット）
+  | 'fatigue'         // だるい（全身）
   | 'mood'            // 機嫌 😊/😐/😫
   | 'cough'           // 咳
+  | 'sputum'          // 痰絡み（呼吸）
+  | 'sore_throat'     // 咽頭痛（呼吸）
   | 'runny_nose'      // 鼻水
   | 'soft_stool'      // 軟便
   | 'watery_stool'    // 水様便
   | 'nausea'          // 吐き気
   | 'vomit'           // 嘔吐
   | 'appetite'        // 食欲 食べれる/半分/水分のみ
+  | 'abdominal_pain'  // 腹痛（消化器）
+  | 'back_pain'       // 背部痛（消化器）
   | 'rash'            // 発疹（その他）
   | 'pain'            // 痛み（その他）
   | 'itch';           // かゆみ（その他）
