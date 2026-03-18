@@ -1,6 +1,6 @@
 'use client';
 
-import { Plus, Settings } from 'lucide-react';
+import { Plus, Settings, Eraser } from 'lucide-react';
 import type { FamilyMember } from '@/lib/types';
 
 function avatarText(name: string): string {
@@ -16,9 +16,10 @@ interface FamilyTabsProps {
   onSelect: (id: string) => void;
   onAddClick: () => void;
   onSettingsClick: () => void;
+  onClearClick?: () => void;
 }
 
-export default function FamilyTabs({ members, activeId, onSelect, onAddClick, onSettingsClick }: FamilyTabsProps) {
+export default function FamilyTabs({ members, activeId, onSelect, onAddClick, onSettingsClick, onClearClick }: FamilyTabsProps) {
   const triggerHaptic = () => {
     if (typeof navigator !== 'undefined' && navigator.vibrate) {
       navigator.vibrate(10);
@@ -61,6 +62,17 @@ export default function FamilyTabs({ members, activeId, onSelect, onAddClick, on
         <Plus className="w-6 h-6" />
         <span className="text-xs">追加</span>
       </button>
+      {onClearClick && (
+        <button
+          type="button"
+          onClick={() => { triggerHaptic(); onClearClick(); }}
+          className="flex-shrink-0 flex flex-col items-center gap-0.5 min-w-[48px] py-2 px-2 rounded-xl bg-slate-100 text-slate-500 active:bg-slate-200"
+          aria-label="症状をクリア"
+        >
+          <Eraser className="w-5 h-5" />
+          <span className="text-xs">クリア</span>
+        </button>
+      )}
       <button
         type="button"
         onClick={() => { triggerHaptic(); onSettingsClick(); }}

@@ -235,6 +235,7 @@ export default function Home() {
         onSelect={setActiveMemberId}
         onAddClick={() => setShowAddForm(true)}
         onSettingsClick={() => setShowSettings(true)}
+        onClearClick={handleClearAllLogs}
       />
 
       <main className="flex-1 px-4 pt-4 pb-32">
