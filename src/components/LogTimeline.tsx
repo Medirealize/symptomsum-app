@@ -26,9 +26,10 @@ function severityLabel(severity: string): string {
 
 interface LogTimelineProps {
   logs: SymptomLog[];
+  onDelete?: (id: string) => void;
 }
 
-export default function LogTimeline({ logs }: LogTimelineProps) {
+export default function LogTimeline({ logs, onDelete }: LogTimelineProps) {
   const sorted = [...logs].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 
   if (sorted.length === 0) {
@@ -58,17 +59,28 @@ export default function LogTimeline({ logs }: LogTimelineProps) {
               <p className="font-medium text-slate-900">{symptomDisplay(log)}</p>
               <p className="text-sm text-slate-500 mt-0.5">{timeRangeLabel(log.timeRange)}</p>
             </div>
-            <span
-              className={`flex-shrink-0 text-xs font-medium px-2 py-1 rounded-full ${
-                log.severity === 'high'
-                  ? 'bg-red-200 text-red-800'
-                  : log.severity === 'mid'
-                    ? 'bg-amber-200 text-amber-800'
-                    : 'bg-blue-200 text-blue-800'
-              }`}
-            >
-              {severityLabel(log.severity)}
-            </span>
+            <div className="flex flex-col items-end gap-1">
+              <span
+                className={`flex-shrink-0 text-xs font-medium px-2 py-1 rounded-full ${
+                  log.severity === 'high'
+                    ? 'bg-red-200 text-red-800'
+                    : log.severity === 'mid'
+                      ? 'bg-amber-200 text-amber-800'
+                      : 'bg-blue-200 text-blue-800'
+                }`}
+              >
+                {severityLabel(log.severity)}
+              </span>
+              {onDelete && (
+                <button
+                  type="button"
+                  onClick={() => onDelete(log.id)}
+                  className="text-[10px] text-slate-400 hover:text-red-500 transition-colors"
+                >
+                  削除
+                </button>
+              )}
+            </div>
           </div>
         </li>
       ))}

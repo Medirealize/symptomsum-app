@@ -116,6 +116,16 @@ export default function Home() {
     [activeMemberId]
   );
 
+  const handleDeleteLog = useCallback(
+    (id: string) => {
+      const next = logs.filter((l) => l.id !== id);
+      persistLogs(next);
+      setToast('1件削除しました');
+      setTimeout(() => setToast(null), 1500);
+    },
+    [logs, persistLogs]
+  );
+
   const handleAddLog = useCallback(
     (payload: PickerPayload) => {
       const log: SymptomLog = {
@@ -198,12 +208,13 @@ export default function Home() {
         chief2: chief2 || null,
       });
     } catch (e) {
-      const raw = e instanceof Error ? e.message : '要約の取得に失敗しました';
-      const msg =
-        raw === 'Failed to fetch' || raw.includes('Failed to fetch')
-          ? `要約APIに接続できません（Failed to fetch）。現在のURL: ${typeof window !== 'undefined' ? window.location.origin : ''}`
-          : raw;
-      setToast(msg);
+      // 失敗しても最低限の診察メモ画面は開く
+      setDoctorView({
+        summary: '要約の生成に失敗しました。電波状況などを確認し、必要であれば口頭で補足してください。',
+        chief1: chief1 || '（なし）',
+        chief2: chief2 || null,
+      });
+      setToast('要約の取得に失敗しました。通信状況を確認して、必要に応じて再試行してください。');
       setTimeout(() => setToast(null), 3000);
     }
   }, [activeMember, logs]);
@@ -229,7 +240,7 @@ export default function Home() {
           <h1 className="text-xl font-bold text-slate-800 leading-tight">いつから？に答える。</h1>
           <p className="text-sm text-slate-600 mt-0.5 leading-tight">〜家族の体調、タップで記録〜</p>
         </div>
-        <LogTimeline logs={logs} />
+        <LogTimeline logs={logs} onDelete={handleDeleteLog} />
 
         {archiveMessage && (
           <p className="text-sm text-slate-600 py-2">{archiveMessage}</p>

@@ -61,7 +61,12 @@ export default function SymptomPicker({ onAdd, onClose }: SymptomPickerProps) {
 
   const handleConfirmOption = () => {
     triggerHaptic();
-    setStep('severity');
+    if (selectedType === 'mood') {
+      // 機嫌は程度を挟まず、そのまま記録
+      handleRecord();
+    } else {
+      setStep('severity');
+    }
   };
 
   const handleRecord = () => {
