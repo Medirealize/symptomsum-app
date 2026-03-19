@@ -45,7 +45,8 @@ export default function WriteEntryClient({
         if (raw) {
           const parsed = JSON.parse(raw) as { content?: string; mode?: string };
           if (!cancelled && typeof parsed.content === "string") setContent(parsed.content);
-          if (!cancelled && isDiaryMode(parsed.mode ?? "")) setDiaryMode(parsed.mode);
+          const draftMode = parsed.mode;
+          if (!cancelled && draftMode && isDiaryMode(draftMode)) setDiaryMode(draftMode);
           return;
         }
       } catch {
@@ -66,8 +67,9 @@ export default function WriteEntryClient({
 
         if (!cancelled) {
           setContent(row?.content ?? "");
-          if (isDiaryMode(row?.mode ?? "")) {
-            setDiaryMode(row.mode);
+          const rowMode = row?.mode;
+          if (rowMode && isDiaryMode(rowMode)) {
+            setDiaryMode(rowMode);
           } else {
             setDiaryMode("禅");
           }

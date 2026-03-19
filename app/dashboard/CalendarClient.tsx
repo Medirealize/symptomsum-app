@@ -102,8 +102,9 @@ export default function CalendarClient({
       if (raw) {
         const parsed = JSON.parse(raw) as { content?: string; mode?: string };
         setContent(typeof parsed.content === "string" ? parsed.content : "");
-        if (isDiaryMode(parsed.mode ?? "")) setDiaryMode(parsed.mode);
-        else setDiaryMode("禅");
+          const draftMode = parsed.mode;
+          if (draftMode && isDiaryMode(draftMode)) setDiaryMode(draftMode);
+          else setDiaryMode("禅");
         loadedFromDraft = true;
       }
     } catch {
@@ -116,7 +117,7 @@ export default function CalendarClient({
       else setContent("");
 
       const existingMode = selectedEntry?.mode;
-      if (isDiaryMode(existingMode ?? "")) {
+      if (existingMode && isDiaryMode(existingMode)) {
         setDiaryMode(existingMode);
       } else {
         setDiaryMode("禅");
