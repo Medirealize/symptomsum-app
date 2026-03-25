@@ -19,7 +19,7 @@ function symptomDisplay(log: SymptomLog): string {
     const a = APPETITE_OPTIONS.find((o) => o.value === log.appetite);
     return a ? `食欲 ${a.label}` : '食欲';
   }
-  return SYMPTOM_LABELS[log.type];
+  return SYMPTOM_LABELS[log.type] ?? '症状';
 }
 
 function severityLabel(severity: string): string {

@@ -3,8 +3,8 @@
 import { Plus, Settings, Eraser } from 'lucide-react';
 import type { FamilyMember } from '@/lib/types';
 
-function avatarText(name: string): string {
-  const trimmed = name.trim();
+function avatarText(name: string | undefined | null): string {
+  const trimmed = String(name ?? '').trim();
   if (!trimmed) return '？';
   // 例: "自分" → "自", "長男" → "長", "Aki" → "A"
   return trimmed[0];

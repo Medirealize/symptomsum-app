@@ -25,6 +25,21 @@ export function generateMemberId(): string {
   return `member-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 }
 
+function sanitizeMember(raw: unknown): FamilyMember | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const m = raw as Partial<FamilyMember>;
+  if (typeof m.id !== 'string' || !m.id.trim()) return null;
+  const name = typeof m.name === 'string' ? m.name.trim() : '';
+  return {
+    id: m.id.trim(),
+    name: name || '名前なし',
+    birthYear: typeof m.birthYear === 'number' && Number.isFinite(m.birthYear) ? m.birthYear : undefined,
+    gender:
+      m.gender === 'male' || m.gender === 'female' || m.gender === 'other' ? m.gender : undefined,
+    allergy: typeof m.allergy === 'string' && m.allergy.trim() ? m.allergy.trim() : 'なし',
+  };
+}
+
 function getLogsKey(memberId: string): string {
   return `${LOGS_KEY_PREFIX}${memberId}`;
 }
@@ -38,9 +53,11 @@ export function loadFamily(): FamilyMember[] {
     }
     const raw = localStorage.getItem(FAMILY_KEY);
     if (!raw) return [...DEFAULT_FAMILY];
-    const parsed = JSON.parse(raw) as FamilyMember[];
+    const parsed = JSON.parse(raw) as unknown;
     if (!Array.isArray(parsed) || parsed.length === 0) return [...DEFAULT_FAMILY];
-    return parsed;
+    const sanitized = parsed.map(sanitizeMember).filter((m): m is FamilyMember => m !== null);
+    if (sanitized.length === 0) return [...DEFAULT_FAMILY];
+    return sanitized;
   } catch {
     return forceResetFamily();
   }
